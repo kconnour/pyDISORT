@@ -8,6 +8,9 @@ on:
 
   workflow_dispatch:
 
+# I think I should make the OSs a matrix but it's beyond my current knowledge
+# See this link for gcc selector: https://github.com/actions/virtual-environments/issues/2503
+
 jobs:
   test-install-ubuntu-20-04:
     name: "Test installation on Ubuntu 20.04 with Python ${{matrix.python-version}}"
@@ -34,14 +37,77 @@ jobs:
         run: |
           python -c "import disort; print(disort.disort.__doc__)"
 
-  #test-install-ubuntu-18-04:
-  #  name: "Test installation on Ubuntu 18.04"
-  #  runs-on: ubuntu-18.04
+  test-install-ubuntu-18-04:
+    name: "Test installation on Ubuntu 18.04 with Python ${{matrix.python-version}}"
+    runs-on: ubuntu-18.04
 
-  #test-fortran-big-sur-11:
-  #  name: "Test installation on macOS Big Sur 11"
-  #  runs-on: macos-10.15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.9 ]
 
-  #test-fortran-catalina-10-15:
-  #  name: "Test installation on macOS Catalina 10.15"
-  #  runs-on: macos-10.15
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pyDISORT
+        run: |
+          python -m pip install .
+
+      - name: Test the installation
+        run: |
+          python -c "import disort; print(disort.disort.__doc__)"
+
+  test-install-big-sur-11:
+    name: "Test installation on macOS Big Sur 11 with Python ${{matrix.python-version}}"
+    runs-on: macos-11
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.9 ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pyDISORT
+        run: |
+          python -m pip install .
+
+      - name: Test the installation
+        run: |
+          python -c "import disort; print(disort.disort.__doc__)"
+
+  test-fortran-catalina-10-15:
+    name: "Test installation on macOS Catalina 10.15 with Python ${{matrix.python-version}}"
+    runs-on: macos-10.15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.9 ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pyDISORT
+        run: |
+          python -m pip install .
+
+      - name: Test the installation
+        run: |
+          python -c "import disort; print(disort.disort.__doc__)"
