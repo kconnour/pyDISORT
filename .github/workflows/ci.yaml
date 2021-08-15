@@ -10,7 +10,7 @@ on:
 
 jobs:
   test-install-ubuntu-20-04:
-    name: "Test installation on Ubuntu 20.04"
+    name: "Test installation on Ubuntu 20.04 with Python ${{matrix.python-version}}"
     runs-on: ubuntu-20.04
 
     strategy:
@@ -32,9 +32,7 @@ jobs:
 
       - name: Test the installation
         run: |
-          python
-          import disort
-          disort.disort.__doc__
+          python -c "import disort; print(disort.disort.__doc__)"
 
   #test-install-ubuntu-18-04:
   #  name: "Test installation on Ubuntu 18.04"
